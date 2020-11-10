@@ -1,0 +1,60 @@
+<div>
+  <div style="float: right;margin-bottom: 20px;">
+    <button class="btn btn-primary" (click)="showHideAddDevice()" >Add Device</button> 
+  </div>
+ <div style="margin: 20px;" *ngIf="addDevice">
+    <form action="">
+      <div style="display: inline-block;" class =" col-12"> 
+        <div class="form-group col-6" style="float: left;">
+          <label>DeviceId</label>
+          <input type="text" [(ngModel)]="deviceId" name="name" class="form-control"/>
+        </div>  
+        <div class="form-group col-6" style="float: left;">
+          <label>Location</label>
+          <input type="text" [(ngModel)]="location" name="deviceId" class="form-control"/>
+        </div> 
+    </div>
+    <div style="float: right;margin-bottom: 20px;"> 
+      <button class="btn btn-primary" (click)="postAddDevice()">Add</button>      
+    </div> 
+    </form>
+  </div>
+
+<table border="1" class="table table-bordered" style="text-align: center;">
+  <thead class=" table-bordered">
+  <tr style="background: #3CB371; color: #ECF0F1 " class="d-flex" >
+    <th class="col-md-6">
+      Device id
+    </th>
+    <th class="col-md-6">Location</th>   
+  </tr>
+  </thead>
+
+  <tr *ngFor="let item of data| paginate: { id: 'list',
+                                            itemsPerPage: pageSize,
+                                            currentPage: currentPage,
+                                            totalItems: totalItems };" class="d-flex" >
+    <td style="background: white" class="col-md-6" >{{item.id}}</td>
+    <td style="background: white" class="col-md-6" >{{item.location}}</td> 
+  </tr>
+</table>
+
+<div>        
+  Page Size: 
+    <select [(ngModel)]="selectedOption" ng-init="selectedOption = options[1].value">
+      <option *ngFor="let o of options">
+          {{o.name}}
+      </option>
+    </select>
+    <button (click)="getPageSize()" class="btn-info">Select</button> 
+
+<pagination-controls style="float: right;" id="list" maxSize=7 directionLinks="true" responsive="true"
+(pageChange)="handlePageChange($event)" ></pagination-controls>
+<div> <span>Total: {{totalItems}}</span></div>
+</div>
+<div> 
+
+
+
+</div>
+

@@ -1,0 +1,80 @@
+<div>
+  <div style="float: right;margin-bottom: 20px;"><button class="btn btn-primary"  (click)="showHideAddUser()">Add User</button></div>
+  
+  <div style="float: left;">
+    <button class="btn btn-primary" style="margin-right: 10px;" (click)="showHideImport()">Import</button>
+    <a href="/demo/rest/user/download"><button class="btn btn-primary">Export</button></a>
+    <div *ngIf="import" style="margin-top: 30px;">
+      <form  [formGroup] = "uploadForm" (ngSubmit)="onSubmit()">
+        <label for="importData">Select a file:  </label>
+        <input type="file" id="importData"  name="profile" (change)="onChange($event)" ><button  type="submit" (click)="message()">Apply</button>  
+
+      </form>
+    </div>
+  </div>
+<!--Add User-->
+  <div style="margin: 20px;float: rigth;" *ngIf="addUser">
+    <form action="">
+      <div style="display: inline-block;" class =" col-12"> 
+        <div class="form-group col-6" style="float: left;">
+          <label>UserId</label>
+          <input type="text" [(ngModel)]="UUID" name="userId" class="form-control"/>
+        </div>  
+        <div class="form-group col-6" style="float: left;">
+          <label>Name</label>
+          <input type="text" [(ngModel)]="nameUser" name="name" class="form-control"/>
+        </div> 
+    </div>
+    <div style="float: right;margin-bottom: 20px;"> 
+      <button class="btn btn-primary" (click)="postAddUser()">Add</button>      
+    </div> 
+    </form>
+  </div>
+
+  <!--Import va export-->
+  
+
+
+    
+ 
+
+  <table border="1" class="table table-bordered" style="text-align: center;">
+    <thead class="table-bordered">
+    <tr style="background: #3CB371; color: #ECF0F1 "class="d-flex">
+      <th class="col-md-4">
+        UUID
+      </th>
+      <th class="col-md-4">Name</th>
+      <th class="col-md-4" >Email</th>
+    </thead>
+    <tr *ngFor="let item of data | paginate: {  id: 'list',
+                                                itemsPerPage: pageSize,
+                                                currentPage: currentPage,
+                                                totalItems: totalItems };" class="d-flex">
+      <td style="background: white;size: 3px" class="col-md-4">{{item.id}} </td>
+      <td style="background: white" class="col-md-4">{{item.name}}</td>
+      <td style="background: white" class="col-md-4">{{item.email}}</td>    
+    </tr>
+  </table>
+
+  <div>        
+    Page Size: 
+      <select [(ngModel)]="selectedOption" ng-init="selectedOption = options[1].value">
+        <option *ngFor="let o of options">
+            {{o.name}}
+        </option>
+      </select>
+      <button (click)="getPageSize()" class="btn-info">Select</button> 
+
+  <pagination-controls style="float: right;" id="list" maxSize=7 directionLinks="true" responsive="true"
+  (pageChange)="handlePageChange($event)" ></pagination-controls>
+  <div> <span>Total: {{totalItems}}</span></div>
+  </div>
+  <div> 
+  <router-outlet></router-outlet>
+
+  </div>
+ 
+
+</div>
+

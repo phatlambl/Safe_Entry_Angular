@@ -1,0 +1,45 @@
+
+
+  <div style="margin-bottom: 100px;" class="offset-4 col-md-4">
+    <form>
+      <div class="form-group">
+        <label>Emails separate by ';'</label>
+        <input type="text" [(ngModel)]="emails" name="emails" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label>Temperature config</label>
+        <input type="number" [(ngModel)]="temperature" name="temperature" class="form-control"/>
+      </div>
+      <button class="btn btn-primary" (click)="postData()" style="float: right;margin-bottom: 20px;">Config</button>
+    </form>
+  </div>
+ 
+<div >
+  <table border="1" class="table table-bordered mt-3" style="text-align: center;">
+    <thead class=" table-bordered">
+    <tr style="background: #3CB371; color: #ECF0F1 " >      
+      <th >Email</th>
+      <th >Max temperature</th>
+    </tr>
+    </thead>
+  
+    <tr *ngFor="let item of data" >      
+      <td >{{item.email}}</td>
+      <td >{{item.temperature.temperature}}</td>
+    </tr>
+  </table>
+
+
+</div>
+
+
+  
+    
+  
+
+ 
+     
+        
+     
+
+
