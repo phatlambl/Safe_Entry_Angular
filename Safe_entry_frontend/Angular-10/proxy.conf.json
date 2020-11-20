@@ -1,7 +1,7 @@
 [
     {
     "context": ["/w/**", "/api/**","/comments/**","/rest/**"],
-    "target": "http://localhost:8080",
+    "target": "http://localhost:9596",
     "secure": false,
     "logLevel" : "debug"
     }

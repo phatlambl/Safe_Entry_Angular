@@ -21,8 +21,15 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/assets/scss/style.scss"],
-            "scripts": []
+            "styles": ["src/assets/scss/style.scss",
+                        "node_modules/bootstrap/dist/css/bootstrap.min.css"
+                     
+                       ],
+            "scripts": [
+                      "node_modules/jquery/dist/jquery.min.js",
+                      "node_modules/popper.js/dist/umd/popper.min.js",
+                      "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"                      
+                    ]
           },
           "configurations": {
             "production": {
