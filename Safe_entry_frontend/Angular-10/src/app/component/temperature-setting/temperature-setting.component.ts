@@ -26,8 +26,8 @@ export class TemperatureSettingComponent implements OnInit {
     const url_list = '/rest/temperature/config/list';
     this.http.post(environment.endpoint + url, {emails: this.emails, temperature: this.temperature}).toPromise().then((data: any) => {          
       if (data.statusCode === 200) {
-        this.http.get(url_list).toPromise().then((data_: any) => {          
-          this.data = data_.content;
+        this.http.get(environment.endpoint + url_list).subscribe((data) => {          
+          this.convertData(data);
         });
       }
     });
@@ -35,10 +35,11 @@ export class TemperatureSettingComponent implements OnInit {
 
   ngOnInit(): void {
     const url = '/rest/temperature/config/list';
-    this.data = this.http.get(environment.endpoint + url).toPromise().then((data: any) => {
-      console.log('user list: ', data.content);
-      this.data = data.content;
-    });
+    this.http.get(environment.endpoint + url).subscribe((data) => {
+      this.convertData(data);
+    }) ;
+     
+    
   }
 
   getPreviousPage() {
@@ -61,4 +62,26 @@ export class TemperatureSettingComponent implements OnInit {
       this.data = data.content;
     });
   }
+
+  convertData(response: any){
+    
+    let myArray: any =[];      
+   
+  
+      response.content.forEach((data: any)=>{ 
+        
+        let temp = {} as listConfig
+        temp.email = data.email;
+        temp.temperature = data.temperature;
+
+        myArray.push(temp)
+      })
+
+      this.data = myArray;     
+  }
+
+}
+export interface listConfig{
+  email: string;
+  temperature: any
 }

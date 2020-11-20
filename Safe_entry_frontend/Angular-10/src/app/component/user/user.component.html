@@ -1,9 +1,9 @@
 <div>
-  <div style="float: right;margin-bottom: 20px;"><button class="btn btn-primary"  (click)="showHideAddUser()">Add User</button></div>
+  <div style="float: right;margin-bottom: 20px;"><button class="btn btn-primary mdi mdi-account-plus"  (click)="showHideAddUser()"> Add User</button></div>
   
   <div style="float: left;">
-    <button class="btn btn-primary" style="margin-right: 10px;" (click)="showHideImport()">Import</button>
-    <a href="/demo/rest/user/download"><button class="btn btn-primary">Export</button></a>
+    <button class="btn btn-primary mdi mdi-file-import" style="margin-right: 10px;" (click)="showHideImport()">Import</button>
+    <a href="/demo/rest/user/download"><button class="btn btn-primary mdi mdi-download">Export</button></a>
     <div *ngIf="import" style="margin-top: 30px;">
       <form  [formGroup] = "uploadForm" (ngSubmit)="onSubmit()">
         <label for="importData">Select a file:  </label>

@@ -8,7 +8,7 @@ import {DeviceLogServiceService} from './device-log-service.service';
 import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -61,7 +61,7 @@ export class DeviceLogsComponent implements OnInit {
  
   
 
-  constructor(private svDeviceLogs: DeviceLogServiceService, private http: HttpClient) {
+  constructor(private svDeviceLogs: DeviceLogServiceService, private http: HttpClient, modalService: NgbModal) {
   }
 
   ngOnInit(): void {    
@@ -69,10 +69,8 @@ export class DeviceLogsComponent implements OnInit {
     this.pageSize = 15;
     const url = '/rest/device/list/log?page=' + this.currentPage + '&pageSize=' + this.pageSize ;
    
-    const Observable = this.http.get(environment.endpoint + url).subscribe((response) => {
-      console.log(response);
-      this.convertData(response)
-      console.log(this.totalItems)
+    const Observable = this.http.get(environment.endpoint + url).subscribe((response) => {      
+      this.convertData(response)     
 
     });
     
@@ -113,8 +111,9 @@ export class DeviceLogsComponent implements OnInit {
     + '&name=' + this.name + '&deviceId=' + this.deviceId +'&fromTimestamp=' + this.fromTimestamp 
     + '&toTimestamp=' + this.toTimestamp + '&sortBy=' + this.sortBy + '&order=' + this.order ;
 
-    const Observable = this.http.get(environment.endpoint + url).subscribe((response) => {
-      // console.log(response);
+    this.http.get(environment.endpoint + url).subscribe((response) => {
+      // console.log(response);    
+      
       this.convertData(response)
       // console.log(this.totalItems)
     });

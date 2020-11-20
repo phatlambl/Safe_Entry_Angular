@@ -47,6 +47,8 @@ export class UserComponent implements OnInit {
     { name: "100", value: 100 }
   ]
 
+  public data: any;
+
   constructor(private http: HttpClient,  private formBuilder: FormBuilder,) { 
     this.uploadForm = this.formBuilder.group({
       profile: ['']
@@ -54,16 +56,16 @@ export class UserComponent implements OnInit {
   }
   
 
-  public data: Object = [];
+ 
   ngOnInit(): void {
     
 
     this.currentPage = 0;
     this.pageSize = 15;
     const url = '/rest/user/list?page='  + (this.currentPage) + '&pageSize=' + this.pageSize;
-    this.data = this.http.get(environment.endpoint + url).toPromise().then((data: any) => {
-      console.log('user list: ', data);
-      this.convertData(data)
+    this.http.get(environment.endpoint + url).subscribe((response) => {           
+      this.convertData(response)
+     
     });
     // const Observable = this.http.get(this.api.getListDeviceLogs, options);
   }
@@ -149,7 +151,7 @@ export class UserComponent implements OnInit {
 
 
   onChange($event: any): void {
-    console.log($event.target.files[0]);
+    // console.log($event.target.files[0]);
     // var formData = new FormData();
     this.formData.append('myFile', $event.target.files[0], 'profile');
   }
@@ -169,12 +171,8 @@ export class UserComponent implements OnInit {
         alert(data.message)      
       
     });
-    this.getPage()
+    this.getPage();
   }
-
-
-
-
 }
 export interface tempUser{
   id:any;

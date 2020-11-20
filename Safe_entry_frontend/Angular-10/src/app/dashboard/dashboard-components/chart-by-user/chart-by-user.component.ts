@@ -106,7 +106,7 @@ getTimestampXDayAgo(x: any){
       date.push(jsdate.toLocaleString('en', options))
        
       })
-      console.log(date)
+      
       this.chart = new Chart('canvas',{
         type: 'line',
         data:{

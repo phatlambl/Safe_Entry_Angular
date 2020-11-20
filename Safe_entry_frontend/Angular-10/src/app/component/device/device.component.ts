@@ -37,9 +37,8 @@ export class DeviceComponent implements OnInit {
   public data: Object = [];
   ngOnInit(): void {
     const url = '/rest/device/list';
-    this.data = this.http.get(environment.endpoint + url).toPromise().then((data: any) => {
-      console.log('user list: ', data.content);
-      this.convertData(data)
+    const Observable = this.http.get(environment.endpoint + url).subscribe((response) => {      
+      this.convertData(response)
     });
     // const Observable = this.http.get(this.api.getListDeviceLogs, options);
   }

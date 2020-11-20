@@ -1,11 +1,11 @@
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   <div >
     <!--Export Data-->
-    <div style="float: right;">
-      <a href="/demo/rest/device/log/download"><Button>Export Data</Button> </a>
+    <div style="float: right;" >
+      <a href="/demo/rest/device/log/download" ><Button class="btn btn-primary "> <i class="mdi mdi-download"></i> Export</Button> </a>
   </div>
 
-      <button class="btn btn-success" style="margin-bottom: 20px;" (click)="showHideFilter()" >Filter</button>
+      <button class="btn btn-success" style="margin-bottom: 20px;" (click)="showHideFilter()" > <i class="mdi mdi-filter"></i> Filter</button>
    
     <div style="margin: 20px;" *ngIf="filter">
       <form action="">
@@ -43,14 +43,14 @@
       <table border="1" class="table table-bordered" style="text-align: center;">
         <thead class="table-bordered">
         <tr style="background: #3CB371; color: #ECF0F1;" class="d-flex" >
-          <th class="col-md-1"><span class="titleHeader">userId</span></th>
-          <th class="col-md-3" (click)="selectSort('name')" > 
+          <th class="col-md-2"><span class="titleHeader">userId</span></th>
+          <th class="col-md-3"  > 
               <span class="titleHeader">Name</span>
-              <i class="fa fa-fw fa-sort"></i>                  
+              <!-- <i class="fa fa-fw fa-sort"></i>                   -->
           </th>
           <th class="col-md-1" >Temperature</th>
           <th class="col-md-1" >CardType</th>
-          <th class="col-md-2" (click)="selectSort('timestamp')">
+          <th class="col-md-1" (click)="selectSort('timestamp')">
             <span class="titleHeader">Date</span> 
             <i class="fa fa-fw fa-sort"></i> 
           </th>
@@ -69,16 +69,20 @@
                                                     currentPage: currentPage,
                                                     totalItems: totalItems }; let i = index"   [class.active]="i == currentPage"
                                                     class="d-flex">
-          <td class="col-md-1">{{item.userId}}</td>
+          <td class="col-md-2">{{item.userId}}</td>
           <td class="col-md-3">{{item.name}}</td>
           <td class="col-md-1">{{item.temperature}}</td>
           <td class="col-md-1">{{item.cardType}}</td>
-          <td class="col-md-2">{{item.date}}</td>
+          <td class="col-md-1">{{item.date}}</td>
           <td class="col-md-1"> {{item.time}}</td>
           <td class="col-md-1">{{item.deviceId}}</td>
           <td class="col-md-1">{{item.location}}</td>
           <td class="col-md-1">       
-            <a routerLink="/dashboard/chart-by-user" [queryParams]="{userId:item.userId,name:item.name}" class="btn btn-primary" >Detail</a>  
+            <!-- <a routerLink="/admin/dashboard/chart-by-user" [queryParams]="{userId:item.userId,name:item.name}" class="btn btn-primary" > Detail</a>   -->
+            
+            <button type="button" class="btn btn-outline-dark btn-sm" style="height:30px;" routerLink="/admin/dashboard/chart-by-user" [queryParams]="{userId:item.userId,name:item.name}"><i class="mdi mdi-chart-line" style="font-size:20px"></i></button>
+
+
           </td>
         </tr>
       </table>

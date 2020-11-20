@@ -1,4 +1,7 @@
+import { AuthenService } from './../../access/authen.service';
+import { Router } from '@angular/router';
 import { Component, EventEmitter, Output } from '@angular/core';
+
 //declare var $: any;
 
 @Component({
@@ -11,5 +14,10 @@ export class NavigationComponent {
 
   public showSearch = false;
 
-  constructor() {}
+  constructor(private router: Router, private AuthenService: AuthenService) {}
+
+  logout(){
+    this.AuthenService.logout();
+    this.router.navigate(['admin/login']);
+  }
 }
