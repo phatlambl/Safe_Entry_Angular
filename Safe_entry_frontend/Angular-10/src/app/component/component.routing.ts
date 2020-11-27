@@ -29,7 +29,7 @@ export const ComponentsRoutes: Routes = [
 				}
 			},
 			{
-				path: 'user',
+				path: 'user',	
 				component: UserComponent,
 				data: {
 					title: '',

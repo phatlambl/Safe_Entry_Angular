@@ -22,7 +22,8 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/assets/scss/style.scss",
-                        "node_modules/bootstrap/dist/css/bootstrap.min.css"
+                       "node_modules/ngx-toastr/toastr.css",
+                        "node_modules/bootstrap/dist/css/bootstrap.min.css"                       
                      
                        ],
             "scripts": [

@@ -11,6 +11,7 @@ import { ComponentsRoutes } from './component.routing';
 
 
 
+
 import  {UserComponent}from './user/user.component';
 import { TemperatureSettingComponent } from './temperature-setting/temperature-setting.component';
 
@@ -22,6 +23,7 @@ import { TemperatureSettingComponent } from './temperature-setting/temperature-s
     ReactiveFormsModule,
     NgbModule,
     NgxPaginationModule
+    
   ],
   declarations: [ 
     TemperatureSettingComponent,

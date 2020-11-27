@@ -136,6 +136,7 @@
       }
       .left-sidebar {
         width: $sidebar-width-mini;
+        position: fixed;
         &:hover {
           width: $sidebar-width-full;
           .sidebar-nav {

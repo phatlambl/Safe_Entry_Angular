@@ -1,4 +1,4 @@
-
+<div class="content">
 
   <div style="margin-bottom: 100px;" class="offset-4 col-md-4">
     <form>
@@ -13,23 +13,30 @@
       <button class="btn btn-primary" (click)="postData()" style="float: right;margin-bottom: 20px;">Config</button>
     </form>
   </div>
+</div>
+
+<div class="box-content"> 
+  
  
 <div >
-  <table border="1" class="table table-bordered mt-3" style="text-align: center;">
-    <thead class=" table-bordered">
-    <tr style="background: #3CB371; color: #ECF0F1 " >      
-      <th >Email</th>
-      <th >Max temperature</th>
+  <table  class="table" style="text-align: center;">
+    <thead >
+    <tr style="background:rgb(250, 250, 250); color: black " class="d-flex">      
+      <th scope="col" class="col-md-6">Email</th>
+      <th scope="col" class="col-md-6">Max temperature</th>
     </tr>
     </thead>
-  
-    <tr *ngFor="let item of data" >      
-      <td >{{item.email}}</td>
-      <td >{{item.temperature.temperature}}</td>
+  <tbody>
+    <tr *ngFor="let item of data"  class="d-flex">      
+      <td scope="row" class="col-md-6">{{item.email}}</td>
+      <td scope="row" class="col-md-6">{{item.temperature.temperature}}</td>
     </tr>
+  </tbody>
   </table>
 
 
+  </div>
+  
 </div>
 
 

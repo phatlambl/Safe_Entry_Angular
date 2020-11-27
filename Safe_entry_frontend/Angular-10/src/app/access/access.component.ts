@@ -2,6 +2,8 @@ import { AuthenService } from './authen.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
 
 
 @Component({
@@ -22,7 +24,8 @@ export class AccessComponent implements OnInit {
   submitted = false;
 
 
-  constructor(private authService: AuthenService, private formBuilder: FormBuilder, private router: Router) { 
+  constructor(private authService: AuthenService, private formBuilder: FormBuilder,
+     private router: Router, private toastr : ToastrService) { 
     this.loginForm = this.formBuilder.group({
       username: [''],
       password: ['']
@@ -31,6 +34,10 @@ export class AccessComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     })
+  }
+
+  showMessage(){
+   
   }
 
   ngOnInit(): void {
@@ -59,7 +66,9 @@ export class AccessComponent implements OnInit {
       if (success) {
         this.router.navigate(['/dashboard']);
       }else{
-        this.error = this.authService.error
+        // this.error = this.authService.error
+        this.toastr.error(this.authService.error);
+       
       }
 
     });

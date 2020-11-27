@@ -47,8 +47,7 @@ export class AuthenService {
   //kiem tra thoi han token
   checkExpToken():Observable<boolean>{
     var subject = new Subject<boolean>();
-    this.HttpClient.get(environment.endpoint + '/rest/device/list/log').subscribe((response) => {  
-      console.log("chay ok");
+    this.HttpClient.get(environment.endpoint + '/rest/device/list/log').subscribe((response) => {        
       subject.next(true)
     }, err => {
       
@@ -69,6 +68,7 @@ export class AuthenService {
   }
   private doLoginUser(username: string, tokens: Tokens){
     this.storeToken(tokens);
+    localStorage.setItem("User", username)
     this.loggedUser= username;
   }
 

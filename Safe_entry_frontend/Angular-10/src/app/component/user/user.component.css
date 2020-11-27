@@ -1,0 +1,17 @@
+.box-content {
+    border-top: 3px solid rgba(133, 206, 54);
+    min-height: calc(100vh - 200px);
+    background-color: #fff;
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.38);
+}
+.content{
+    margin: 1rem;
+
+}
+.titleHeader:hover{
+    cursor: pointer;    
+    color: black;      
+}
+.i:hover{
+    cursor: pointer;  
+}

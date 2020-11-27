@@ -1,8 +1,11 @@
+import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { environment } from './../../../environments/environment.prod';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpResponse, HttpHeaders} from '@angular/common/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 
 @Component({
@@ -17,19 +20,30 @@ export class UserComponent implements OnInit {
 
   import: boolean=false;
   messageImport: boolean= false;
+  csv_link: String = environment.endpoint + "/rest/user/download";
 
 
   //add User
   addUser: boolean=false;
-  UUID: any;
-  nameUser: any;
+  UUID: any="";
+  nameUser: any="";
+  emailUser: any="";
  
   
-  
+  //delete
+  confirmDelete: String="Are you sure delete ";
+  idDelete: any="";
+  nameDelete: any="";
+
   //filter
-  name: any;
-  userId: any;
-  email: any;
+  name: any='';
+  userId: any='';
+  email: any='';
+
+  //sort
+  sortBy: any;
+  order: any;
+  test: boolean =true;
 
    //pagination
    pageSize: any;
@@ -47,9 +61,13 @@ export class UserComponent implements OnInit {
     { name: "100", value: 100 }
   ]
 
+
+  
+
   public data: any;
 
-  constructor(private http: HttpClient,  private formBuilder: FormBuilder,) { 
+  constructor(private http: HttpClient,  private formBuilder: FormBuilder,
+     modalService: NgbModal, private toastr : ToastrService ) { 
     this.uploadForm = this.formBuilder.group({
       profile: ['']
     });
@@ -66,19 +84,26 @@ export class UserComponent implements OnInit {
     this.http.get(environment.endpoint + url).subscribe((response) => {           
       this.convertData(response)
      
-    });
-    // const Observable = this.http.get(this.api.getListDeviceLogs, options);
+    });   
   }
 
 
+ 
   onSubmit(){
     // formData.append('myFile', this.uploadForm.get('profile')?.value);
     this.http.post<any>(environment.endpoint + '/rest/user/import', this.formData).toPromise().then((data: any) => {     
      
-      alert(data.message)      
+      if(data.statusCode === 200){
+        this.toastr.success(data.message)
+        this.getPage()
+      }else{
+        this.toastr.error(data.message);  
+      }
+      this.formData.delete('myFile');
+      
     
   });
-  this.getPage()
+  
   }
 
 
@@ -91,10 +116,57 @@ export class UserComponent implements OnInit {
     
   }
 
-  onDelete(id:any){
-    console.log(id)
-    this.http.delete(environment.endpoint + '/')
+  postAddUser(){
+    const url = '/rest/user/add';
+    this.http.post(environment.endpoint + url, {id: this.UUID, name: this.nameUser}).toPromise().then((data: any) => {     
+     
+      if(data.statusCode === 200){
+        this.toastr.success(data.message);
+        this.getPage();
+      }else{
+        this.toastr.error(data.message);  
+      }      
+    });
+    
   }
+  EditRow(id: any){
+    this.UUID = id;
+  }
+  update(){
+    const update = '/rest/user/update';
+    this.http.put(environment.endpoint + update,{id: this.UUID, name: this.nameUser, email: this.emailUser}).toPromise().then((data:any) => {
+      if(data.statusCode === 200){
+        this.toastr.success(data.message);
+        this.getPage();
+        // this.refresh();
+      }else{
+        this.toastr.error(data.message);  
+      }     
+    });
+    this.UUID="";
+    this.nameUser="";
+    this.emailUser="";
+  }
+
+  // validate delete
+  onDelete(id:any, name:any){ 
+    this.idDelete = id;
+    this.nameDelete = name    
+  }
+  delete(){
+    const API_Delete = '/rest/user/delete/';
+    this.http.delete(environment.endpoint + API_Delete + this.idDelete).toPromise().then((data:any) => {
+      if(data.statusCode === 200){
+        this.toastr.success(data.message);
+        this.getPage();
+        // this.refresh();
+      }else{
+        this.toastr.error(data.message);  
+      }     
+    });
+    this.idDelete = "";
+  }
+
 
   message(){
     if(this.messageImport){
@@ -127,13 +199,35 @@ export class UserComponent implements OnInit {
 
 
   getPage(){
-    const url = '/rest/user/list?page='  + (this.currentPage - 1) + '&pageSize=' + this.pageSize; 
+
+        const url = '/rest/user/list?page='  + (this.currentPage - 1) + '&pageSize=' + this.pageSize
+        + '&name=' + this.name +'&userId=' + this.userId + '&email=' + this.email + 
+        '&sortBy=' + this.sortBy + '&order=' + this.order ; 
     const Observable = this.http.get(environment.endpoint + url).subscribe((response) => {
-      // console.log(response);
-      this.convertData(response)
-      // console.log(this.totalItems)
+        this.convertData(response)      
     });
   
+  }
+  selectSort(sort: any){   
+    if(this.test){
+      this.test = false
+    }else{
+      this.test = true;
+    }
+      
+    var orderBy
+     console.log("click: " + sort )
+     if (this.test){
+      orderBy = "DESC"
+     }else{
+       orderBy ="ASC"
+     }
+     console.log("test oderBy: " + orderBy)
+
+     this.sortBy = sort
+     this.order = orderBy
+     this.getPage()   
+
   }
 
   getPageSize(){
@@ -141,6 +235,12 @@ export class UserComponent implements OnInit {
     this.getPage();
   }
 
+  refresh(){
+    const refresh = '/rest/user/list?page='  + 0 + '&pageSize=' + this.pageSize; 
+    const Observable = this.http.get(environment.endpoint + refresh).subscribe((response) => {      
+      this.convertData(response)   
+    });
+  }
 
 
   handlePageChange(event: number){
@@ -164,15 +264,7 @@ export class UserComponent implements OnInit {
 
   }
 
-  postAddUser(){
-    const url = '/rest/user/add';
-    this.http.post(environment.endpoint + url, {id: this.UUID, name: this.nameUser}).toPromise().then((data: any) => {     
-     
-        alert(data.message)      
-      
-    });
-    this.getPage();
-  }
+
 }
 export interface tempUser{
   id:any;

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from './../../../environments/environment.prod';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpResponse, HttpHeaders} from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-device',
@@ -13,9 +14,21 @@ export class DeviceComponent implements OnInit {
   pageIndex: any;  
   addDevice: boolean=false;
 
+    //update/add device
   deviceId: any;
-  location: any;
+  location: any='';
+  floor: any='';
+  room: any='';
 
+   //delete
+   confirmDelete: String="Are you sure delete device: ";
+   idDelete: any="";
+   
+
+   //sort
+   sortBy: any;
+   order: any;
+   test: boolean =true;
 
     //page Size
     selectedOption: any;
@@ -33,7 +46,7 @@ export class DeviceComponent implements OnInit {
     currentPage: any;
     totalItems: any;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private toastr : ToastrService) { }
   public data: Object = [];
   ngOnInit(): void {
     const url = '/rest/device/list';
@@ -54,13 +67,30 @@ export class DeviceComponent implements OnInit {
 
   getPage(){  
 
-    const url = '/rest/device/list?page='  + (this.currentPage -1) + '&pageSize=' + this.pageSize;
+    const url = '/rest/device/list?page='  + (this.currentPage -1) + '&pageSize=' + this.pageSize +
+     '&sortBy=' + this.sortBy +'&order=' + this.order;
     const Observable = this.http.get(environment.endpoint + url).subscribe((response) => {
-      // console.log(response);
-      this.convertData(response)
-      // console.log(this.totalItems)
+           this.convertData(response)
     });    
     
+  }
+  selectSort(sort: any){   
+    if(this.test){
+      this.test = false
+    }else{
+      this.test = true;
+    }      
+    var orderBy
+     console.log("click: " + sort )
+     if (this.test){
+      orderBy = "DESC"
+     }else{
+       orderBy ="ASC"
+     }
+     console.log("test oderBy: " + orderBy)
+     this.sortBy = sort
+     this.order = orderBy
+     this.getPage() 
   }
 
   getPageSize(){
@@ -80,6 +110,8 @@ export class DeviceComponent implements OnInit {
         let temp = {} as tempDevice
         temp.id = data.id;
         temp.location = data.location;
+        temp.floor = data.floor;
+        temp.room = data.room;
 
         myArray.push(temp)
       })
@@ -92,11 +124,58 @@ export class DeviceComponent implements OnInit {
     const url = '/rest/device/add';
     this.http.post(environment.endpoint + url, {id: this.deviceId, location: this.location}).toPromise().then((data: any) => {     
      
-        alert(data.message)      
+      if(data.statusCode === 200){
+        this.toastr.success(data.message)
+        this.getPage()
+      }else{
+        this.toastr.error(data.message);  
+      }    
       
-    });
-    this.getPage()
+    });  
+    this.deviceId="";
+    this.location="";
+    this.floor="";
+    this.room="";
+  }
 
+  EditRow(id: any){
+    this.deviceId = id;
+  }
+
+  update(){
+    const update = '/rest/device/update';
+    this.http.put(environment.endpoint + update,{id: this.deviceId, location: this.location, 
+       floor: this.floor, room: this.room}).toPromise().then((data:any) => {
+            if(data.statusCode === 200){
+              this.toastr.success(data.message);
+              this.getPage();
+              // this.refresh();
+            }else{
+              this.toastr.error(data.message);  
+            }     
+    });
+    this.deviceId="";
+    this.location="";
+    this.floor="";
+    this.room="";
+  }
+
+   // validate delete
+   onDelete(id:any){ 
+    this.idDelete = id;     
+  }
+  delete(){
+    const API_Delete = '/rest/device/delete/';
+    this.http.delete(environment.endpoint + API_Delete + this.idDelete).toPromise().then((data:any) => {
+      if(data.statusCode === 200){
+        this.toastr.success(data.message);
+        this.getPage();
+        // this.refresh();
+      }else{
+        this.toastr.error(data.message);  
+      }     
+    });
+    this.idDelete = "";
   }
   showHideAddDevice(){
     if(this.addDevice){
@@ -104,11 +183,12 @@ export class DeviceComponent implements OnInit {
     }else{
       this.addDevice=true
     }
-
   }
 
 }
 export interface tempDevice{
   id: any;
   location: any;
+  floor: any;
+  room: any;
 }

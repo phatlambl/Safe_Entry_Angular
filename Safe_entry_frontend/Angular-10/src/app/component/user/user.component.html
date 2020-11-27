@@ -1,80 +1,309 @@
-<div>
-  <div style="float: right;margin-bottom: 20px;"><button class="btn btn-primary mdi mdi-account-plus"  (click)="showHideAddUser()"> Add User</button></div>
-  
-  <div style="float: left;">
-    <button class="btn btn-primary mdi mdi-file-import" style="margin-right: 10px;" (click)="showHideImport()">Import</button>
-    <a href="/demo/rest/user/download"><button class="btn btn-primary mdi mdi-download">Export</button></a>
-    <div *ngIf="import" style="margin-top: 30px;">
-      <form  [formGroup] = "uploadForm" (ngSubmit)="onSubmit()">
-        <label for="importData">Select a file:  </label>
-        <input type="file" id="importData"  name="profile" (change)="onChange($event)" ><button  type="submit" (click)="message()">Apply</button>  
+<div class="content">
+  <div>
+    <div style="margin-bottom: 20px;float: right">
+      <button
+        class="btn btn-success mdi mdi-account-plus"
+        (click)="showHideAddUser()"
+        data-toggle="modal"
+        data-target="#addUser"
+      >
+        Add User
+      </button>
+    </div>
 
-      </form>
+    <div >
+      <button
+        class="btn btn-success mdi mdi-cloud-upload"
+        style="margin-right: 10px"
+        (click)="showHideImport()"
+      >
+        Import
+      </button>
+      <a [href]="csv_link"
+        ><button class="btn btn-success  mdi mdi-cloud-download">
+          Export
+        </button></a
+      >
+      <div *ngIf="import" style="margin-top: 30px">
+        <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+          <label for="importData">Select a file: </label>
+          <input
+            type="file"
+            id="importData"
+            name="profile"
+            (change)="onChange($event)"
+          /><button type="submit" (click)="message()">Apply</button>
+        </form>
+      </div>
+    </div>
+    <!--Add User-->
+
+    <div class="modal" id="addUser">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">ADD USER</h4>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form action="">
+              <div class="col-12">
+                <div class="form-group">
+                  <label style="float: left">UserId</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="UUID"
+                    name="userId"
+                    class="form-control"
+                  />
+                </div>
+                <div class="form-group">
+                  <label style="float: left">Name</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="nameUser"
+                    name="name"
+                    class="form-control"
+                  />
+                </div>
+                <div class="form-group">
+                  <label style="float: left">Email</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="emailUser"
+                    name="email"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <div style="float: right; margin-bottom: 20px">
+              <button
+                class="btn btn-primary"
+                (click)="postAddUser()"
+                data-dismiss="modal"
+                style="margin-right: 1rem"
+              >
+                Add
+              </button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-<!--Add User-->
-  <div style="margin: 20px;float: rigth;" *ngIf="addUser">
-    <form action="">
-      <div style="display: inline-block;" class =" col-12"> 
-        <div class="form-group col-6" style="float: left;">
-          <label>UserId</label>
-          <input type="text" [(ngModel)]="UUID" name="userId" class="form-control"/>
-        </div>  
-        <div class="form-group col-6" style="float: left;">
-          <label>Name</label>
-          <input type="text" [(ngModel)]="nameUser" name="name" class="form-control"/>
-        </div> 
-    </div>
-    <div style="float: right;margin-bottom: 20px;"> 
-      <button class="btn btn-primary" (click)="postAddUser()">Add</button>      
-    </div> 
-    </form>
-  </div>
-
-  <!--Import va export-->
-  
-
-
-    
- 
-
-  <table border="1" class="table table-bordered" style="text-align: center;">
-    <thead class="table-bordered">
-    <tr style="background: #3CB371; color: #ECF0F1 "class="d-flex">
-      <th class="col-md-4">
-        UUID
-      </th>
-      <th class="col-md-4">Name</th>
-      <th class="col-md-4" >Email</th>
-    </thead>
-    <tr *ngFor="let item of data | paginate: {  id: 'list',
-                                                itemsPerPage: pageSize,
-                                                currentPage: currentPage,
-                                                totalItems: totalItems };" class="d-flex">
-      <td style="background: white;size: 3px" class="col-md-4">{{item.id}} </td>
-      <td style="background: white" class="col-md-4">{{item.name}}</td>
-      <td style="background: white" class="col-md-4">{{item.email}}</td>    
-    </tr>
-  </table>
-
-  <div>        
-    Page Size: 
-      <select [(ngModel)]="selectedOption" ng-init="selectedOption = options[1].value">
-        <option *ngFor="let o of options">
-            {{o.name}}
-        </option>
-      </select>
-      <button (click)="getPageSize()" class="btn-info">Select</button> 
-
-  <pagination-controls style="float: right;" id="list" maxSize=7 directionLinks="true" responsive="true"
-  (pageChange)="handlePageChange($event)" ></pagination-controls>
-  <div> <span>Total: {{totalItems}}</span></div>
-  </div>
-  <div> 
-  <router-outlet></router-outlet>
-
-  </div>
- 
-
 </div>
 
+<div class="box-content">
+  <!--Import va export-->
+
+  <table class="table" style="text-align: center">
+    <thead>
+      <tr style="background: rgb(250, 250, 250); color: black" class="d-flex">
+        <th class="col-md-3" scope="col" (click)="selectSort('id')">
+          <span class="titleHeader">UUID</span>
+          <i class="fa fa-fw fa-sort"></i>
+        </th>
+        <th class="col-md-4" scope="col" (click)="selectSort('name')">
+          <span class="titleHeader">Name</span>
+          <i class="fa fa-fw fa-sort"></i>
+        </th>
+        <th class="col-md-4" scope="col" (click)="selectSort('email')">
+          <span class="titleHeader">Email</span>
+          <i class="fa fa-fw fa-sort"></i>
+        </th>
+        <th class="col-md-1" scope="col">&nbsp;</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr
+        *ngFor="
+          let item of data
+            | paginate
+              : {
+                  id: 'list',
+                  itemsPerPage: pageSize,
+                  currentPage: currentPage,
+                  totalItems: totalItems
+                }
+        "
+        class="d-flex"
+      >
+        <td class="col-md-3" scope="row">{{ item.id }}</td>
+        <td class="col-md-4" scope="row">{{ item.name }}</td>
+        <td class="col-md-4" scope="row">{{ item.email }}</td>
+        <td class="col-md-1" scope="row">
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            style="margin-right: 10px"
+            data-toggle="modal"
+            (click)="EditRow(item.id)"
+            data-target="#myModal"
+          >
+            <i class="mdi mdi-pencil"></i>
+          </button>
+          <!-- edit and delete user -->
+          <div class="modal" id="myModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">EDIT USER</h4>
+                  <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                  </button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                  <form action="">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label style="float: left">UserId</label>
+                        <input
+                          type="text"
+                          [(ngModel)]="UUID"
+                          name="userId"
+                          class="form-control"
+                          disabled
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label style="float: left">Name</label>
+                        <input
+                          type="text"
+                          [(ngModel)]="nameUser"
+                          name="name"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label style="float: left">Email</label>
+                        <input
+                          type="text"
+                          [(ngModel)]="emailUser"
+                          name="name"
+                          class="form-control"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <div style="float: right; margin-bottom: 20px">
+                    <button
+                      class="btn btn-primary"
+                      (click)="update()"
+                      data-dismiss="modal"
+                      style="margin-right: 1rem"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-outline-danger"
+            (click)="onDelete(item.id, item.name)"
+            data-toggle="modal"
+            data-target="#delete"
+          >
+            <i class="mdi mdi-delete"></i>
+          </button>
+
+          <!-- The Modal -->
+          <div class="modal" id="delete">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Confirm</h4>
+                  <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                  </button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                  <h4>{{ confirmDelete }} {{ nameDelete }}</h4>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-dismiss="modal"
+                    (click)="delete()"
+                  >
+                    Delete
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <footer>
+    <div>
+      Page Size:
+      <select
+        [(ngModel)]="selectedOption"
+        ng-init="selectedOption = options[1].value"
+      >
+        <option *ngFor="let o of options">
+          {{ o.name }}
+        </option>
+      </select>
+      <button (click)="getPageSize()" class="btn-info">Select</button>
+
+      <pagination-controls
+        style="float: right"
+        id="list"
+        maxSize="7"
+        directionLinks="true"
+        responsive="true"
+        (pageChange)="handlePageChange($event)"
+      ></pagination-controls>
+      <div>
+        <span>Total: {{ totalItems }}</span>
+      </div>
+    </div>
+  </footer>
+
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

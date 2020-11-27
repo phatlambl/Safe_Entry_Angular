@@ -1,60 +1,296 @@
-<div>
-  <div style="float: right;margin-bottom: 20px;">
-    <button class="btn btn-primary" (click)="showHideAddDevice()" >Add Device</button> 
-  </div>
- <div style="margin: 20px;" *ngIf="addDevice">
-    <form action="">
-      <div style="display: inline-block;" class =" col-12"> 
-        <div class="form-group col-6" style="float: left;">
-          <label>DeviceId</label>
-          <input type="text" [(ngModel)]="deviceId" name="name" class="form-control"/>
-        </div>  
-        <div class="form-group col-6" style="float: left;">
-          <label>Location</label>
-          <input type="text" [(ngModel)]="location" name="deviceId" class="form-control"/>
-        </div> 
+<div class="content">
+  <div>
+    <div style="margin-bottom: 20px;float: right;">
+      <button
+        class="btn btn-success mdi mdi-plus-circle-outline"
+        data-toggle="modal"
+        data-target="#addDevice"        
+      >
+        Add Device
+      </button>
     </div>
-    <div style="float: right;margin-bottom: 20px;"> 
-      <button class="btn btn-primary" (click)="postAddDevice()">Add</button>      
-    </div> 
-    </form>
+
+    <!--Add Device-->
+    <div class="modal" id="addDevice">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">ADD Device</h4>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form action="">
+              <div class="col-12">
+                <div class="form-group">
+                  <label style="float: left">DeviceId</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="deviceId"
+                    name="deviceId"
+                    class="form-control"
+                  />
+                </div>
+                <div class="form-group">
+                  <label style="float: left">Location</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="location"
+                    name="location"
+                    class="form-control"
+                  />
+                </div>
+                <div class="form-group">
+                  <label style="float: left">Floor</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="floor"
+                    name="floor"
+                    class="form-control"
+                  />
+                </div>
+                <div class="form-group">
+                  <label style="float: left">Room</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="room"
+                    name="room"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <div style="float: right; margin-bottom: 20px">
+              <button
+                class="btn btn-primary"
+                (click)="postAddDevice()"
+                data-dismiss="modal"
+                style="margin-right: 1rem"
+              >
+                Add
+              </button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
-<table border="1" class="table table-bordered" style="text-align: center;">
-  <thead class=" table-bordered">
-  <tr style="background: #3CB371; color: #ECF0F1 " class="d-flex" >
-    <th class="col-md-6">
-      Device id
-    </th>
-    <th class="col-md-6">Location</th>   
-  </tr>
-  </thead>
+<div class="box-content" style="clear: right;">
+  <table class="table" style="text-align: center">
+    <thead>
+      <tr style="background: rgb(250, 250, 250); color: black" class="d-flex">
+        <th class="col-md-3" scope="col" (click)="selectSort('id')">
+          <span class="titleHeader">DeviceId</span>
+          <i class="fa fa-fw fa-sort"></i>
+        </th>
+        <th class="col-md-4" scope="col" (click)="selectSort('location')">
+          <span class="titleHeader">Location</span>
+          <i class="fa fa-fw fa-sort"></i>
+        </th>
+        <th class="col-md-2" scope="col" (click)="selectSort('floor')">
+          <span class="titleHeader">Floor</span>
+          <i class="fa fa-fw fa-sort"></i>
+        </th>
+        <th class="col-md-2" scope="col" (click)="selectSort('room')">
+          <span class="titleHeader">Room</span>
+          <i class="fa fa-fw fa-sort"></i>
+        </th>
+        <th class="col-md-1" scope="col">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let item of data
+            | paginate
+              : {
+                  id: 'list',
+                  itemsPerPage: pageSize,
+                  currentPage: currentPage,
+                  totalItems: totalItems
+                }
+        "
+        class="d-flex"
+      >
+        <td scope="row" class="col-md-3">{{ item.id }}</td>
+        <td scope="row" class="col-md-4">{{ item.location }}</td>
+        <td scope="row" class="col-md-2">{{ item.floor }}</td>
+        <td scope="row" class="col-md-2">{{ item.room }}</td>
+        <td scope="row" class="col-md-1">
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            style="margin-right: 10px"
+            data-toggle="modal"
+            (click)="EditRow(item.id)"
+            data-target="#myModal"
+          >
+            <i class="mdi mdi-pencil"></i>
+          </button>
+          <!-- edit and delete user -->
+          <div class="modal" id="myModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Edit Device</h4>
+                  <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                  </button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                  <form action="">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label style="float: left">DeviceId</label>
+                        <input
+                          type="text"
+                          [(ngModel)]="deviceId"
+                          name="deviceId"
+                          class="form-control"
+                          disabled
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label style="float: left">Location</label>
+                        <input
+                          type="text"
+                          [(ngModel)]="location"
+                          name="location"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label style="float: left">Floor</label>
+                        <input
+                          type="text"
+                          [(ngModel)]="floor"
+                          name="floor"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label style="float: left">Room</label>
+                        <input
+                          type="text"
+                          [(ngModel)]="room"
+                          name="room"
+                          class="form-control"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <div style="float: right; margin-bottom: 20px">
+                    <button
+                      class="btn btn-primary"
+                      (click)="update()"
+                      data-dismiss="modal"
+                      style="margin-right: 1rem"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-outline-danger"
+            (click)="onDelete(item.id)"
+            data-toggle="modal"
+            data-target="#delete"
+          >
+            <i class="mdi mdi-delete"></i>
+          </button>
 
-  <tr *ngFor="let item of data| paginate: { id: 'list',
-                                            itemsPerPage: pageSize,
-                                            currentPage: currentPage,
-                                            totalItems: totalItems };" class="d-flex" >
-    <td style="background: white" class="col-md-6" >{{item.id}}</td>
-    <td style="background: white" class="col-md-6" >{{item.location}}</td> 
-  </tr>
-</table>
+          <!-- The Modal -->
+          <div class="modal" id="delete">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Confirm</h4>
+                  <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                  </button>
+                </div>
 
-<div>        
-  Page Size: 
-    <select [(ngModel)]="selectedOption" ng-init="selectedOption = options[1].value">
+                <!-- Modal body -->
+                <div class="modal-body">
+                  <h4>{{ confirmDelete }} {{ idDelete }}</h4>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-dismiss="modal"
+                    (click)="delete()"
+                  >
+                    Delete
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div>
+    Page Size:
+    <select
+      [(ngModel)]="selectedOption"
+      ng-init="selectedOption = options[1].value"
+    >
       <option *ngFor="let o of options">
-          {{o.name}}
+        {{ o.name }}
       </option>
     </select>
-    <button (click)="getPageSize()" class="btn-info">Select</button> 
+    <button (click)="getPageSize()" class="btn-info">Select</button>
 
-<pagination-controls style="float: right;" id="list" maxSize=7 directionLinks="true" responsive="true"
-(pageChange)="handlePageChange($event)" ></pagination-controls>
-<div> <span>Total: {{totalItems}}</span></div>
+    <pagination-controls
+      style="float: right"
+      id="list"
+      maxSize="7"
+      directionLinks="true"
+      responsive="true"
+      (pageChange)="handlePageChange($event)"
+    ></pagination-controls>
+    <div>
+      <span>Total: {{ totalItems }}</span>
+    </div>
+  </div>
 </div>
-<div> 
-
-
-
-</div>
-

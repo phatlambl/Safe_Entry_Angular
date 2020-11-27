@@ -19,12 +19,17 @@ export class TokenInterceptor implements HttpInterceptor {
     if (this.AuthenService.getJwtToken()) {
       request = this.addToken(request, this.AuthenService.getJwtToken()); }
     return next.handle(request).pipe(catchError(err => {    
-      if(err.status === 401){
-        
-        this.AuthenService.removeTokens();
-        this.router.navigate(['admin/login']);
+      // if(err.status === 401){
+      //   alert("401")
+        if(err.status != 200){
+          this.AuthenService.removeTokens();
+          this.router.navigate(['admin/login']);
 
-      }
+        }
+       
+
+      console.log("loi");
+      
       
       return Observable.throw(err)
     }));
