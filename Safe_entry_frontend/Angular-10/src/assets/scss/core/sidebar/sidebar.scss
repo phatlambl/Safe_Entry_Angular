@@ -10,7 +10,7 @@ Main sidebar
 ******************/
 
 .left-sidebar {
-  position: absolute;
+  position: fixed;
   width: $sidebar-width-full;
   height: 100%;
   top: 0px;
@@ -28,6 +28,7 @@ sidebar navigation
 .scroll-sidebar {
   height: calc(100vh - 20px);
   // position: fixed;
+  
 }
 
 .sidebar-nav {
@@ -45,6 +46,8 @@ sidebar navigation
         line-height: 25px;
         opacity: 0.6;
         text-decoration: none;
+        border-radius: 10px;
+        margin: 10px;
         i {
           font-style: normal;
           width: 35px;

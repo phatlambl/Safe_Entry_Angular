@@ -1,7 +1,8 @@
+import { Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {Chart} from 'chart.js'
 import { map } from "rxjs/operators";
 import { environment } from './../../../../environments/environment.prod';
@@ -14,16 +15,20 @@ import { environment } from './../../../../environments/environment.prod';
 })
 export class ChartByUserComponent implements OnInit {
 
-  chart: any= [];  
-
+  chart: any= [];
   userId: any
   name:any
   public subParam: Subscription = new Subscription;
+  from: any
+  to: any
   fromTimestamp: any
   toTimestamp: any 
   d: any  
   public data: Object = [];
-  projectName = "demo"
+
+  //show time select
+  TimeSelect: boolean = true;
+
 
 
   constructor(private http: HttpClient,
@@ -43,7 +48,10 @@ export class ChartByUserComponent implements OnInit {
     { name: "6 month", value: 180 }
   ]
   getTime() {   
-    
+  
+    this.from = null;
+    this.to = null;
+    this.TimeSelect = true;
   this.printedOption = this.selectedOption;
 
    if(this.selectedOption === "1 week")
@@ -62,7 +70,21 @@ export class ChartByUserComponent implements OnInit {
    this.getChart() 
    
   }
+
+  showTimeSelect(){
+   if(this.from ==null || this.from ==undefined){
+     this.TimeSelect = true;
+     return
+   }
+   if(this.to == null || this.from == undefined){
+     this.TimeSelect = true;
+     return
+   }else{
+     this.TimeSelect = false;
+   }
+  }
   
+
   //function get time x day from a current date
 getTimestampXDayAgo(x: any){
   var units = {
@@ -81,8 +103,25 @@ getTimestampXDayAgo(x: any){
 
 
   getDeviceLogsByUser(){
-    let getChart = "/rest/device/list/user?userId=" + this.userId + "&fromTimestamp=" + this.fromTimestamp + "&toTimestamp=" + this.toTimestamp;
-   return this.http.get(environment.endpoint + getChart).pipe(map(result => result));   
+    if(this.from != null){
+      this.fromTimestamp = new Date(this.from).getTime();
+    }
+   if(this.to !=null){
+    this.toTimestamp = new Date(this.to).getTime();
+   }
+   
+
+    let getChart = "/rest/device/list/user";
+    let filter ={
+      userId: this.userId,
+      name: this.name,
+      fromTimestamp: this.fromTimestamp,
+      toTimestamp: this.toTimestamp
+    }
+    let params = new HttpParams({fromObject:filter});
+    console.log(this.userId);
+    
+   return this.http.get(environment.endpoint + getChart,{params}).pipe(map(result => result));   
    }
 
    //get chart
@@ -145,7 +184,11 @@ getTimestampXDayAgo(x: any){
 
   ngOnInit(): void { 
     //auto 7 day when access
+    this.selectedOption ="1 week";
     this.subParam = this.activatedRouted.queryParamMap.subscribe((params) =>{
+      console.log(params.get('userId'));
+      
+
       this.userId = params.get('userId')
       this.name = params.get('name')  
       

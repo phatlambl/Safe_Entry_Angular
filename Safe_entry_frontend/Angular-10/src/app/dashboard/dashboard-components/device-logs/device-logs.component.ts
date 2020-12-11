@@ -41,6 +41,7 @@ export class DeviceLogsComponent implements OnInit {
   selectedOption: any;
   options = [
     { name: "10", value: 10 },
+    { name: "15", value: 15 },
     { name: "25", value: 25 },
     { name: "50", value: 50 },
     { name: "100", value: 100 },
@@ -62,6 +63,8 @@ export class DeviceLogsComponent implements OnInit {
   ngOnInit(): void {
     this.currentPage = 0;
     this.pageSize = 15;
+
+    this.selectedOption=15;
 
     this.name = "";
     this.deviceId = "";
@@ -122,6 +125,15 @@ export class DeviceLogsComponent implements OnInit {
   }
 
   getPage() {
+    if(this.name === null){
+      this.name="";
+    }
+    if(this.deviceId === null){
+      this.deviceId="";
+    }
+    if(this.to === null){
+      this.to = new Date();
+    }
     if (this.from === undefined) {
       this.from = 0;
     }
@@ -137,7 +149,7 @@ export class DeviceLogsComponent implements OnInit {
 
     this.fromTimestamp = new Date(this.from).getTime();
     this.toTimestamp = new Date(this.to).getTime();
-
+  
     const url =
       "/rest/device/list/log?page=" +
       (this.currentPage - 1) +
@@ -164,6 +176,12 @@ export class DeviceLogsComponent implements OnInit {
     });
   }
 
+  clear(){
+ 
+    console.log("name: " + this.name);
+    
+
+  }
   handlePageChange(event: number) {
     this.currentPage = event;
     this.getPage();
@@ -183,6 +201,7 @@ export class DeviceLogsComponent implements OnInit {
       temp.cardType = data.cardType;
       temp.temperature = data.temperature.toFixed(1);
       // temp.temperature = Math.round(data.temperature * 10) / 10;
+      temp.ttCode = data.ttCode;
       temp.deviceId = data.deviceId;
       temp.location = data.location;
       let jsdate = new Date(data.timestamp);
@@ -255,6 +274,7 @@ export interface temp {
   name: any;
   cardType: any;
   temperature: any;
+  ttCode: any;
   deviceId: any;
   location: any;
   date: any;

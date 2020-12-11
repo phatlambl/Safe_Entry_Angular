@@ -20,6 +20,7 @@ export class TemperatureSettingComponent implements OnInit {
   count = 0;
   public data: Object = [];
   message: any;
+  
 
   constructor(private http: HttpClient, private toastr : ToastrService ) {
   }

@@ -1,42 +1,48 @@
-<div class="box-content"> 
-   <div class="content">
-
-   <div class="offset-1 col-md-10" style="margin-bottom: 4rem;">
-      <p> Name: {{name}}</p>
-      <p> UUID: {{userId}}</p>
-
-
-      <!-- select option time -->
-      <div> 
-         <select [(ngModel)]="selectedOption" ng-init="selectedOption = options[1].value">
+<div class="box-content">
+  <div class="content">
+    <div class="offset-1 col-md-10" style="margin-bottom: 4rem">
+       <p>Name: {{ name }}</p>
+        <p>UUID: {{ userId }}</p>
+      <div style="float: left">
+       
+        <!-- select option time -->
+        <div>
+          <select [(ngModel)]="selectedOption">
             <option *ngFor="let o of options">
-               {{o.name}}
+              {{ o.name }}
             </option>
-         </select>
-         <button (click)="getTime()">Select</button><br>
-         
-         <!-- <p>Selected option: {{ selectedOption }}</p> -->
-         <p>Time select: {{ printedOption }} ago</p>
-      </div>
-      <!-- 
-      <div class="col-md-2">
-         <div class="form-group">
-            <label>FromTimestamp</label>
-            <input type="date" [(ngModel)]="fromTimestamp" name="fromTimestamp" class="form-control"/>
-         </div>
-         <div class="form-group">
-            <label>toTimestamp</label>
-            <input type="date" [(ngModel)]="toTimestamp" name="toTimestamp" class="form-control"/>
-         </div>
-      </div> -->
+          </select>
+          <button (click)="getTime()" style="margin-left: 5px;">Select</button><br>
 
-      <div *ngIf="chart" >
-      <canvas id="canvas">{{ chart }}</canvas>
+          <!-- <p>Selected option: {{ selectedOption }}</p> -->
+          <div *ngIf="TimeSelect"><p>Time select: {{ printedOption }} ago</p></div>
+               
+        </div>
       </div>
 
-         </div>
+      <div style="float: right">
+        <div>         
+            <label style="margin: 0px 10px 0px 10px;">From</label>
+            <input
+              type="date"
+              [(ngModel)]="from"
+              name="fromTimestamp"                           
+            />    
+        
+            <label style="margin: 0px 10px 0px 10px;">To</label>
+            <input
+              type="date"
+              [(ngModel)]="to"
+              name="toTimestamp"           
+            />
+       
+          <button (click)="getChart()" (click)="showTimeSelect()"  class="btn btn-success" style="margin: 0px 10px 0px 10px;"><i class="mdi mdi-magnify"></i></button>
+        </div>
+      </div>
 
-   </div>
+      <div *ngIf="chart">
+        <canvas id="canvas">{{ chart }}</canvas>
+      </div>
+    </div>
+  </div>
 </div>
-
-

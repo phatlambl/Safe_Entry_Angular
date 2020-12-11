@@ -15,3 +15,49 @@
 .i:hover{
     cursor: pointer;  
 }
+.footer-table{
+    margin: 20px;
+    margin-bottom: 10px;;
+}
+.table td, th{
+    padding: 7px;
+}
+.content-table{
+    min-height: calc(100vh - 285px);
+}
+
+
+button.edit{   
+    background: rgba(133, 206, 54);     
+    color: white;     
+    width: 50%;
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.4);
+}
+button.edit:hover{   
+    background: rgba(133, 206, 54);   
+    color: black;     
+}
+button.cancel{
+    background: rgb(60, 129, 199);
+    color: white; 
+    width: 50%;
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.4);
+}
+button.cancel:hover{
+    background: rgb(60, 129, 199);
+    color: black; 
+    width: 50%;
+}
+.modal-content{
+   
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.38);
+}
+.modal-header{
+    background: rgba(133, 206, 54); 
+}
+.modal-footer{
+    display: inline;
+}
+.modal-title{
+    color: #fff;
+}

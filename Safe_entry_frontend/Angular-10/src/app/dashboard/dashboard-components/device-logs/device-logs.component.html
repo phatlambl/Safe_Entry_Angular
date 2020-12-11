@@ -12,8 +12,7 @@
   </div>
 
   <button
-    class="btn btn-success"
-    style="margin-bottom: 20px"
+    class="btn btn-success"    
     (click)="showHideFilter()"
   >
     <i class="mdi mdi-filter"></i> Filter
@@ -69,7 +68,7 @@
         >
           Apply
         </button>
-        <button type="reset" class="btn btn-secondary" style="margin: 20px">
+        <button type="reset" class="btn btn-secondary" (click)="clear()" style="margin: 20px">
           Clear
         </button>
       </div>
@@ -77,43 +76,46 @@
   </div>
 </div> 
 
-<div class="box-content">
+<div class="box-content" >
    
-    <div>
-      <table class="table" style="text-align: center">
-        <thead>
+    <div class="content-table">
+      <table class="table" style="text-align: center" >
+        <thead >
           <tr
             style="background: rgb(250, 250, 250); color: black"
-            class="d-flex"
+            class="d-flex " 
           >
-            <th class="col-md-2" scope="col">
+            <th class="col-2" scope="col">
               <span class="titleHeader">UserId</span>
             </th>
-            <th class="col-md-3" scope="col">
+            <th class="col-2" scope="col">
               <span class="titleHeader">Name</span>
               <!-- <i class="fa fa-fw fa-sort"></i>                   -->
             </th>
-            <th class="col-md-1" scope="col">
+            <th class="col-1" scope="col">
               <span class="titleHeader">Temperature</span>
             </th>
-            <th class="col-md-1" scope="col">
+            <th class="col-1" scope="col">
               <span class="titleHeader">Type</span>
             </th>
-            <th class="col-md-1" scope="col" (click)="selectSort('timestamp')">
+            <th class="col-1" scope="col" (click)="selectSort('timestamp')">
               <span class="titleHeader">Date</span>
               <i class="fa fa-fw fa-sort"></i>
             </th>
-            <th class="col-md-1" scope="col">
+            <th class="col-1" scope="col">
               <span class="titleHeader">Time</span>
             </th>
-            <th class="col-md-1" scope="col" (click)="selectSort('device_Id')">
+            <th class="col-1" scope="col">
+              <span class="titleHeader">TTCode</span>
+            </th>
+            <th class="col-1" scope="col" (click)="selectSort('device_Id')">
               <span class="titleHeader">DeviceId</span>
               <i class="fa fa-fw fa-sort"></i>
             </th>
-            <th class="col-md-1" scope="col">
+            <th class="col-1" scope="col">
               <span class="titleHeader">Location</span>
             </th>
-            <th class="col-md-1" scope="col">&nbsp;</th>
+            <th class="col-1" scope="col">&nbsp;</th>
           </tr>
         </thead>
         <tbody>
@@ -132,15 +134,16 @@
             [class.active]="i == currentPage"
             class="d-flex"
           >
-            <td class="col-md-2" scope="row">{{ item.userId }}</td>
-            <td class="col-md-3" scope="row">{{ item.name }}</td>
-            <td class="col-md-1" scope="row">{{ item.temperature }}</td>
-            <td class="col-md-1" scope="row">{{ item.cardType }}</td>
-            <td class="col-md-1" scope="row">{{ item.date }}</td>
-            <td class="col-md-1" scope="row">{{ item.time }}</td>
-            <td class="col-md-1" scope="row">{{ item.deviceId }}</td>
-            <td class="col-md-1" scope="row">{{ item.location }}</td>
-            <td class="col-md-1" scope="row">
+            <td class="col-2" scope="row">{{ item.userId }}</td>
+            <td class="col-2" scope="row">{{ item.name }}</td>
+            <td class="col-1" scope="row">{{ item.temperature }}</td>
+            <td class="col-1" scope="row">{{ item.cardType }}</td>
+            <td class="col-1" scope="row">{{ item.date }}</td>
+            <td class="col-1" scope="row">{{ item.time }}</td>
+            <td class="col-1" scope="row">{{ item.ttCode }}</td>
+            <td class="col-1" scope="row">{{ item.deviceId }}</td>
+            <td class="col-1" scope="row">{{ item.location }}</td>
+            <td class="col-1" scope="row">
               <!-- <a routerLink="/admin/dashboard/chart-by-user" [queryParams]="{userId:item.userId,name:item.name}" class="btn btn-primary" > Detail</a>   -->
 
               <button
@@ -156,17 +159,18 @@
         </tbody>
       </table>
     </div>
-    <div>
+    <div class="footer-table">
+     
       Page Size:
       <select
-        [(ngModel)]="selectedOption"
-        ng-init="selectedOption = options[1].value"
+        [(ngModel)]="selectedOption" 
+        ng-init="selectedOption = options[1].value" (click)="getPageSize()"
       >
-        <option *ngFor="let o of options">
+        <option *ngFor="let o of options" [value]="o.name">
           {{ o.name }}
         </option>
       </select>
-      <button (click)="getPageSize()" class="btn-info">Select</button>
+      <!-- <button (click)="getPageSize()" class="btn-info">Select</button> -->
 
       <pagination-controls
         style="float: right"

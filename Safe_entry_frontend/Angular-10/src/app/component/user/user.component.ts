@@ -41,7 +41,7 @@ export class UserComponent implements OnInit {
   email: any='';
 
   //sort
-  sortBy: any;
+  sortBy: any='';
   order: any;
   test: boolean =true;
 
@@ -56,6 +56,7 @@ export class UserComponent implements OnInit {
   selectedOption: any;
   options = [
     { name: "10", value: 10 },
+    { name: "15", value: 15 },
     { name: "25", value: 25 },
     { name: "50", value: 50 },
     { name: "100", value: 100 }
@@ -77,7 +78,7 @@ export class UserComponent implements OnInit {
  
   ngOnInit(): void {
     
-
+    this.selectedOption=15;
     this.currentPage = 0;
     this.pageSize = 15;
     const url = '/rest/user/list?page='  + (this.currentPage) + '&pageSize=' + this.pageSize;
@@ -198,8 +199,13 @@ export class UserComponent implements OnInit {
   }
 
 
-  getPage(){
-
+  getPage(){   
+    if (this.sortBy === undefined) {
+      this.sortBy = "id";
+    }
+    if (this.order === undefined) {
+      this.order = "DESC";
+    }
         const url = '/rest/user/list?page='  + (this.currentPage - 1) + '&pageSize=' + this.pageSize
         + '&name=' + this.name +'&userId=' + this.userId + '&email=' + this.email + 
         '&sortBy=' + this.sortBy + '&order=' + this.order ; 

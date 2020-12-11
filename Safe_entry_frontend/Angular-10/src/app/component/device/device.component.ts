@@ -34,6 +34,7 @@ export class DeviceComponent implements OnInit {
     selectedOption: any;
     options = [
       { name: "10", value: 10 },
+      { name: "15", value: 15 },
       { name: "25", value: 25 },
       { name: "50", value: 50 },
       { name: "100", value: 100 }
@@ -49,6 +50,8 @@ export class DeviceComponent implements OnInit {
   constructor(private http: HttpClient, private toastr : ToastrService) { }
   public data: Object = [];
   ngOnInit(): void {
+
+    this.selectedOption=10;
     const url = '/rest/device/list';
     const Observable = this.http.get(environment.endpoint + url).subscribe((response) => {      
       this.convertData(response)
@@ -66,6 +69,13 @@ export class DeviceComponent implements OnInit {
   
 
   getPage(){  
+    if (this.sortBy === undefined) {
+      this.sortBy = "id";
+    }
+    if (this.order === undefined) {
+      this.order = "DESC";
+    }
+    
 
     const url = '/rest/device/list?page='  + (this.currentPage -1) + '&pageSize=' + this.pageSize +
      '&sortBy=' + this.sortBy +'&order=' + this.order;
