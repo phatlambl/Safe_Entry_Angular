@@ -1,5 +1,4 @@
 import { Approutes } from './../app-routing.module';
-import { Title } from '@angular/platform-browser';
 import { NgModule } from "@angular/core";
 import {NgxPaginationModule} from 'ngx-pagination'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -44,7 +43,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ChartsModule,    
     NgbModule,
-    NgxPaginationModule
+    NgxPaginationModule, 
   ], 
   exports:[ChartByUserComponent],
   declarations: [DashboardComponent, DeviceLogsComponent, ChartByUserComponent],

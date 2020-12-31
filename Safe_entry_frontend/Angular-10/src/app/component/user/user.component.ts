@@ -5,6 +5,7 @@ import { environment } from './../../../environments/environment.prod';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpResponse, HttpHeaders} from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {Title} from "@angular/platform-browser";
 
 
 
@@ -20,7 +21,7 @@ export class UserComponent implements OnInit {
 
   import: boolean=false;
   messageImport: boolean= false;
-  csv_link: String = environment.endpoint + "/rest/user/download";
+  csv_link: String = environment.endpoint + "/rest/user/download?timezone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 
   //add User
@@ -49,9 +50,8 @@ export class UserComponent implements OnInit {
    pageSize: any;
    currentPage: any;
    totalItems: any;
+
    formData = new FormData();
-
-
      //page Size
   selectedOption: any;
   options = [
@@ -68,7 +68,7 @@ export class UserComponent implements OnInit {
   public data: any;
 
   constructor(private http: HttpClient,  private formBuilder: FormBuilder,
-     modalService: NgbModal, private toastr : ToastrService ) { 
+     modalService: NgbModal, private toastr : ToastrService, private titleService:Title ) { 
     this.uploadForm = this.formBuilder.group({
       profile: ['']
     });
@@ -86,6 +86,7 @@ export class UserComponent implements OnInit {
       this.convertData(response)
      
     });   
+    this.titleService.setTitle("Safe Entry");
   }
 
 
@@ -185,19 +186,16 @@ export class UserComponent implements OnInit {
     this.currentPage = response.currentPage + 1
     this.pageSize = response.pageSize
   
-      response.listUser.forEach((data: any)=>{ 
-        
+      response.listUser.forEach((data: any)=>{         
         let temp = {} as tempUser
         temp.id = data.id;
         temp.name = data.name;
         temp.email = data.email;
-
         myArray.push(temp)
       })
 
       this.data = myArray;     
   }
-
 
   getPage(){   
     if (this.sortBy === undefined) {
@@ -211,9 +209,9 @@ export class UserComponent implements OnInit {
         '&sortBy=' + this.sortBy + '&order=' + this.order ; 
     const Observable = this.http.get(environment.endpoint + url).subscribe((response) => {
         this.convertData(response)      
-    });
-  
+    });  
   }
+
   selectSort(sort: any){   
     if(this.test){
       this.test = false
@@ -267,7 +265,6 @@ export class UserComponent implements OnInit {
     }else{
       this.addUser=true
     }
-
   }
 
 

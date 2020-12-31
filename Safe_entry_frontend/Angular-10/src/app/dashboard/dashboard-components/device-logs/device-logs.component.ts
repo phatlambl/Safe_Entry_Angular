@@ -9,6 +9,7 @@ import { Component, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { saveAs } from "file-saver";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: "app-device-logs",
@@ -31,6 +32,7 @@ export class DeviceLogsComponent implements OnInit {
   to: any;
   fromTimestamp: any;
   toTimestamp: any;
+  timezone: any;
 
   //sort
   sortBy: any;
@@ -55,9 +57,11 @@ export class DeviceLogsComponent implements OnInit {
   constructor(
     private svDeviceLogs: DeviceLogServiceService,
     private http: HttpClient,
-    modalService: NgbModal
+    modalService: NgbModal,
+    private titleService:Title
   ) {
     this.name;
+   
   }
 
   ngOnInit(): void {
@@ -79,6 +83,8 @@ export class DeviceLogsComponent implements OnInit {
       .subscribe((response) => {
         this.convertData(response);
       });
+      this.titleService.setTitle("Safe Entry");
+      this.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
   downloadCsv() {
     if (this.from === undefined) {
@@ -111,7 +117,9 @@ export class DeviceLogsComponent implements OnInit {
       "&sortBy=" +
       this.sortBy +
       "&order=" +
-      this.order;
+      this.order + 
+      "&timezone="+
+      this.timezone;
 
     saveAs(csv_link);
   }

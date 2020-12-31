@@ -19,7 +19,7 @@
       Import
     </button>
     <a [href]="csv_link"
-      ><button class="btn btn-success mdi mdi-cloud-download">Export</button></a
+      ><button class="btn btn-success mdi mdi-cloud-download"> Export</button></a
     >
     <div *ngIf="import" style="margin-top: 30px">
       <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
@@ -144,16 +144,15 @@
           <td class="col-md-4" scope="row">{{ item.name }}</td>
           <td class="col-md-4" scope="row">{{ item.email }}</td>
           <td class="col-md-1" scope="row">
-            <button
-              type="button"
-              class="btn btn-outline-primary"
-              style="margin-right: 10px"
+            <a
+              type="button"              
+              style="margin-right: 10px;color: #28a745"
               data-toggle="modal"
               (click)="EditRow(item.id)"
               data-target="#myModal"
             >
               <i class="mdi mdi-pencil"></i>
-            </button>
+            </a>
             <!-- edit and delete user -->
             <div class="modal" id="myModal">
               <div class="modal-dialog">
@@ -223,15 +222,15 @@
                 </div>
               </div>
             </div>
-            <button
+            <a
               type="button"
-              class="btn btn-outline-danger"
+              style="color: #d44237"
               (click)="onDelete(item.id, item.name)"
               data-toggle="modal"
               data-target="#delete"
             >
               <i class="mdi mdi-delete"></i>
-            </button>
+            </a>
 
             <!-- The Modal -->
             <div class="modal" id="delete">

@@ -3,7 +3,7 @@ import { environment } from './../../../environments/environment.prod';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpResponse, HttpHeaders} from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-
+import {Title} from "@angular/platform-browser";
 @Component({
   selector: 'app-device',
   templateUrl: './device.component.html',
@@ -47,7 +47,8 @@ export class DeviceComponent implements OnInit {
     currentPage: any;
     totalItems: any;
 
-  constructor(private http: HttpClient, private toastr : ToastrService) { }
+  constructor(private http: HttpClient, private toastr : ToastrService,
+    private titleService:Title) { }
   public data: Object = [];
   ngOnInit(): void {
 
@@ -56,6 +57,7 @@ export class DeviceComponent implements OnInit {
     const Observable = this.http.get(environment.endpoint + url).subscribe((response) => {      
       this.convertData(response)
     });
+    this.titleService.setTitle("Safe Entry");
     // const Observable = this.http.get(this.api.getListDeviceLogs, options);
   }
 

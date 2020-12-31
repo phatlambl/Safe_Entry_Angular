@@ -26,8 +26,9 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { AccessComponent } from './access/access.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { ToastrModule } from 'ngx-toastr';
-
-
+import {TabModule} from 'angular-tabs-component'
+import { NgxTagsInputModule } from 'ngx-tags-input';
+import { UiSwitchModule } from 'ngx-toggle-switch';
 
 
 
@@ -60,6 +61,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     RouterModule.forRoot(Approutes, { useHash: false }),
     NgxPaginationModule,
     ReactiveFormsModule,
+    TabModule,   
+    NgxTagsInputModule,
+    UiSwitchModule,
     ToastrModule.forRoot({
       timeOut: 2500,
       positionClass: 'toast-bottom-right'

@@ -129,16 +129,15 @@
           <td scope="row" class="col-md-2">{{ item.floor }}</td>
           <td scope="row" class="col-md-2">{{ item.room }}</td>
           <td scope="row" class="col-md-1">
-            <button
-              type="button"
-              class="btn btn-outline-primary"
-              style="margin-right: 10px"
+            <a
+              type="button"              
+              style="margin-right: 10px;color: #007bff"
               data-toggle="modal"
               (click)="EditRow(item.id)"
               data-target="#myModal"
             >
               <i class="mdi mdi-pencil"></i>
-            </button>
+            </a>
             <!-- edit and delete user -->
             <div class="modal" id="myModal">
               <div class="modal-dialog">
@@ -217,15 +216,15 @@
                 </div>
               </div>
             </div>
-            <button
-              type="button"
-              class="btn btn-outline-danger"
+            <a             
+            type="button" 
+              style="color: #d44237"
               (click)="onDelete(item.id)"
               data-toggle="modal"
               data-target="#delete"
             >
               <i class="mdi mdi-delete"></i>
-            </button>
+            </a>
 
             <!-- The Modal -->
             <div class="modal" id="delete">

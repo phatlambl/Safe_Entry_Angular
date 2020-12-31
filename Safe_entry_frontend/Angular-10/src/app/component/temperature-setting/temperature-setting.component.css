@@ -1,10 +1,58 @@
-.box-content {
-    border-top: 3px solid rgba(133, 206, 54);
-    min-height: calc(100vh - 400px);
+.box-content{    
+    margin: 20px;
+    padding-bottom: 50px;
+    border: 1px solid #dee2e6;
+    min-height: calc(100vh - 475px);
     background-color: #fff;
     box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.38);
+    border-top: 3px solid rgba(133, 206, 54);   
+    background-color: #fff;
+    
 }
-.content{
-    margin: 1rem;
+.content {
+    padding: 30px;    
+    padding-bottom: 50px;
+    border: 1px solid #dee2e6;
+    background-color: #fff;
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.38);
+    width: 30%;   
+    margin: 20px;
+}
+
+.nav-tabs{
+    border-bottom: 0px solid #dee2e6;
+   
+}
+.nav-tabs .nav-link.active{
+    border-radius: 8px;
+    color: white;
+    background-color: rgb(121, 76, 138);
+}
+.nav-item{
+    margin: 10px;
+}
+.setting{   
+    color: black;
+    background-color: rgb(207, 235, 160);
 
 }
+.modal {
+    text-align: center;
+  }
+  
+  @media screen and (min-width: 768px) { 
+    .modal:before {
+      display: inline-block;
+      vertical-align: middle;
+      content: " ";
+      height: 100%;
+      min-height: 400px;
+    }
+  }
+  
+  .modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+    min-width: 500px;
+  }

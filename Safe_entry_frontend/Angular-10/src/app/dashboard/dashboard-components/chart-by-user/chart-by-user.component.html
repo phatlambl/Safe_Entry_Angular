@@ -1,44 +1,46 @@
 <div class="box-content">
   <div class="content">
+  
     <div class="offset-1 col-md-10" style="margin-bottom: 4rem">
-       <p>Name: {{ name }}</p>
+      <div style="margin: 28px;">
+        <p>Name: {{ name }}</p>
         <p>UUID: {{ userId }}</p>
-      <div style="float: left">
-       
-        <!-- select option time -->
+        <label for="datetime">Time select: </label>    
+        <input type="text"  [size]="myInput.value.length" #myInput autocomplete="off" id="datetime" name="datetimes" style="margin-left: 4px;" />  
+        <!-- <button   class="btn btn-success" style="margin: 0px 10px 0px 10px;"><i class="mdi mdi-magnify"></i></button> -->
+      </div>
+        
+      <!-- select option time -->
+      <!-- <div style="float: left">  
         <div>
           <select [(ngModel)]="selectedOption">
             <option *ngFor="let o of options">
               {{ o.name }}
             </option>
           </select>
-          <button (click)="getTime()" style="margin-left: 5px;">Select</button><br>
+          <button (click)="getTime()" style="margin-left: 5px; background-color: rgb(33, 136, 56);color: white;">Change</button><br>
 
-          <!-- <p>Selected option: {{ selectedOption }}</p> -->
-          <div *ngIf="TimeSelect"><p>Time select: {{ printedOption }} ago</p></div>
-               
+          <div *ngIf="TimeSelect"><p>Time select: {{ printedOption }} ago</p></div>               
         </div>
       </div>
-
-      <div style="float: right">
-        <div>         
+      <div style="float: right;">
+        <div>             
             <label style="margin: 0px 10px 0px 10px;">From</label>
             <input
-              type="date"
+              type="datetime-local"
               [(ngModel)]="from"
               name="fromTimestamp"                           
             />    
         
             <label style="margin: 0px 10px 0px 10px;">To</label>
             <input
-              type="date"
+              type="datetime-local"
               [(ngModel)]="to"
               name="toTimestamp"           
-            />
-       
+            />       
           <button (click)="getChart()" (click)="showTimeSelect()"  class="btn btn-success" style="margin: 0px 10px 0px 10px;"><i class="mdi mdi-magnify"></i></button>
         </div>
-      </div>
+      </div> -->
 
       <div *ngIf="chart">
         <canvas id="canvas">{{ chart }}</canvas>

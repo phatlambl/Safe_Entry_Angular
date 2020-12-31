@@ -1,52 +1,321 @@
-<div class="content">
 
-  <div style="margin-bottom: 100px;" class="offset-4 col-md-4">
-    <form>
-      <div class="form-group">
-        <label>Emails separate by ';'</label>
-        <input type="text" [(ngModel)]="emails" name="emails" class="form-control"/>
+<div>
+  <button class="setting" data-toggle="modal" data-target="#temperature">
+    <i class="mdi mdi-settings"></i> Add Email
+  </button>
+</div>
+
+<div class="modal" id="temperature">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header" style="background-color: rgb(207, 235, 160)">
+        <h4 class="modal-title">Temperature Configure</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
       </div>
-      <div class="form-group">
-        <label>Temperature config</label>
-        <input type="number" [(ngModel)]="temperature" name="temperature" class="form-control"/>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div>
+          <form>
+            <div class="form-group">
+              <label>Emails</label>
+              <ngx-tags-input
+                style="height: auto"
+                class="form-control"
+                [removeLastOnBackspace]="true"
+                [(ngModel)]="emails"
+                name="emails"
+              ></ngx-tags-input>
+            </div>
+            <div class="form-group">
+              <label>Temperature config</label>
+              <input
+                type="number"
+                [(ngModel)]="temperature"
+                name="temperature"
+                class="form-control"
+              />
+            </div>
+          </form>
+        </div>
       </div>
-      <button class="btn btn-primary" (click)="postData()" style="float: right;margin-bottom: 20px;">Config</button>
-    </form>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <div style="display: flex">
+          <button
+            type="submit"
+            class="btn btn-outline-success edit"
+            data-dismiss="modal"
+            style="margin-right: 1rem"
+            (click)="postData()"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-primary cancel"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="box-content"> 
-  
- 
-<div >
-  <table  class="table" style="text-align: center;">
-    <thead >
-    <tr style="background:rgb(250, 250, 250); color: black " class="d-flex">      
-      <th scope="col" class="col-md-6">Email</th>
-      <th scope="col" class="col-md-6">Max temperature</th>
-    </tr>
-    </thead>
-  <tbody>
-    <tr *ngFor="let item of data"  class="d-flex">      
-      <td scope="row" class="col-md-6">{{item.email}}</td>
-      <td scope="row" class="col-md-6">{{item.temperature.temperature}}</td>
-    </tr>
-  </tbody>
-  </table>
-
-
+<div style="width: 100%">
+  <div class="box-content">
+    <div>
+      <table class="table" style="text-align: center">
+        <thead>
+          <tr
+            style="background: rgb(250, 250, 250); color: black"
+            class="d-flex"
+          >
+            <th scope="col" class="col-md-4">Email</th>
+            <th scope="col" class="col-md-2">Max temperature</th>
+            <th scope="col" class="col-md-1">Alert</th>
+            <th scope="col" class="col-md-1">Report</th>
+            <th scope="col" class="col-md-1">Time Report</th>
+            <th scope="col" class="col-md-1">Timezone</th>
+            <th scope="col" class="col-md-2">Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let item of data
+                | paginate
+                  : {
+                      id: 'list',
+                      itemsPerPage: pageSize,
+                      currentPage: currentPage,
+                      totalItems: totalItems
+                    }
+            "
+            class="d-flex"
+          >
+            <td scope="row" class="col-md-4">{{ item.email }}</td>
+            <td scope="row" class="col-md-2">
+              {{ item.temperature.temperature }}
+            </td>
+            <td scope="row" class="col-md-1">
+              <ui-switch
+                labelOn="On"
+                labelOff="Off"
+                [ngModel]="item.alert" 
+                (click)="updateStatusAlert(item)"
+              ></ui-switch>
+            </td>
+            <td scope="row" class="col-md-1">
+              <ui-switch
+                labelOn="On"
+                labelOff="Off"
+                [ngModel]="item.report"
+                (click)="updateStatusReport(item)"
+              ></ui-switch>
+            </td>
+            <td scope="row" class="col-md-1">{{ item.time }}</td>
+            <td scope="row" class="col-md-1">{{ item.timezone }}</td>
+            <td scope="row" class="col-md-2">
+              <a
+                style="margin-right: 10px; color: #28a745"
+                data-toggle="modal"
+                data-target="#edit"
+                (click)="EditRow(item)
+                "
+                ><i class="mdi mdi-pencil"></i
+              ></a>
+              <a
+                style="color: #d44237"
+                data-toggle="modal"
+                data-target="#delete"
+                (click)="onDelete(item.id, item.email)"
+                ><i class="mdi mdi-delete"></i
+              ></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <pagination-controls
+        style="float: right"
+        id="list"
+        maxSize="7"
+        directionLinks="true"
+        responsive="true"
+        (pageChange)="handlePageChange($event)"
+      ></pagination-controls>
+    </div>
   </div>
-  
 </div>
 
+<!--Modal Edit-->
+<div class="modal" id="edit">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">EDIT EMAIL</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form action="">
+          <div class="col-12">
+            <div class="form-group">
+              <label style="float: left">ID</label>
+              <input
+                type="text"
+                [(ngModel)]="emailId"
+                name="ID"
+                class="form-control"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label style="float: left">Email</label>
+              <input
+                type="text"
+                [(ngModel)]="email"
+                name="Email"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label for="alert" style="float: left">Alert</label>
+              <select
+                [(ngModel)]="alert"
+                name="alert"
+                id="alert"
+                class="form-control"
+              > <option value="true">ON</option>
+                <option value="false">OFF</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="reportStatus" style="float: left">Report</label>
+              <select
+                [(ngModel)]="report"
+                name="reportStatus"
+                id="reportStatus"
+                class="form-control"
+              > <option value="true">ON</option>
+                <option value="false">OFF</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="frequency" style="float: left">Frequency</label>
+              <select
+                [(ngModel)]="frequency"
+                name="frequency"
+                id="frequency"
+                class="form-control"
+              >
+                <option value="daily">Daily</option>
+                <option value="weekly" (click)="getShowDayOfWeek()">
+                  Weekly
+                </option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+            <div class="form-group" *ngIf="getShowDayOfWeek()">
+              <label style="float: left">Day Of Week</label>
+              <input
+                type="text"
+                [(ngModel)]="dayOfWeek"
+                name="name"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label style="float: left">Time</label>
+              <input
+                type="time"
+                [(ngModel)]="time"
+                name="name"
+                class="form-control"
+              />
+            </div>            
+            <div class="form-group">
+              <label style="float: left">Timezone</label>
+              <select
+                [(ngModel)]="timezone"
+                name="report"
+                id="report"
+                class="form-control"
+              >
+                <option *ngFor="let o of timezones" [value]="o">{{ o }}</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <div style="display: flex">
+          <button
+            class="btn btn-outline-success edit"
+            (click)="update()"
+            data-dismiss="modal"
+            style="margin-right: 1rem"
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-primary cancel"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  
-    
-  
-
- 
-     
-        
-     
-
-
+<!-- Modal Delete -->
+<div class="modal" id="delete">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Confirm</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <h4>{{ confirmDelete }} {{ nameDelete }}</h4>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <div style="display: flex">
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-dismiss="modal"
+            style="width: 50%; margin-right: 1rem"
+            (click)="delete()"
+          >
+            Delete
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            style="width: 50%"
+            data-dismiss="modal"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
